@@ -1,0 +1,32 @@
+var five = require("johnny-five");
+var board = new five.Board();
+
+
+board.on("ready", function() {
+  var isActive = false;
+  var led = new five.Led(2);
+  var servo = new five.Servo.Continuous({
+    pin: 11,
+    isInverted: true,
+  });
+
+  servo.stop();
+
+  var button = new five.Button({
+    isPullup: true,
+    pin: 4
+  });
+
+  button.on("press", function() {
+    if (isActive) {
+      isActive = false;
+      servo.stop();
+      led.off();
+    } 
+    else {
+      isActive = true;
+      servo.cw(0.08);
+      led.on();
+    }
+  });
+});
